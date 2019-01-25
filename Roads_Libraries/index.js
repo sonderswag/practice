@@ -25,60 +25,68 @@ function readLine() {
     return inputString[currentLine++];
 }
 
+class Node {
+    constructor(value) {
+        this.data = value;
+        this.children = [];
+    }
+}
+
+
+
 // Complete the roadsAndLibraries function below.
 function roadsAndLibraries(n, c_lib, c_road, cities) {
-    console.log(cities);
     if (c_road >= c_lib) {
         return n * c_lib;
     }
+    const graph = {};
 
-    // remove nodes as I visit them
-    let unVisited = new Array(n).fill(0).map((i, index) => index);
-    // visited = visited.filter(i => i !== node);
+    // create graph;
+    for (let road of cities) {
+        if (!graph[road[0]]) {
+            graph[road[0]] = [road[1]];
+        } else {
+            graph[road[0]].push(road[1]);
+        }
+
+        if (!graph[road[1]]) {
+            graph[road[1]] = [road[0]];
+        } else {
+            graph[road[1]].push(road[0]);
+        }
+    }
 
     let groups = [];
-    let sum = 0;
 
-    // problem when there are no roads don't want to add those cities into groups
-    // can only add cities with roads to the visited map and only do dfs on those cities 
-    // use hash table instead of an array for Visitation map 
-    while (sum < n) {
-        // get the first un-visted node
-        let first = 0; // index of the first unvisited node 
-        unVisited.some((node, index) => {
-            first = index;
-            return node !== null;
-        });
-        const node = unVisited[first];
-        const groupSize = DFS(node + 1, unVisited, cities);
-        sum += groupSize;
-        groups.push(groupSize);
+    // now do DPS to get size and number of groups
+    for (let node in graph) {
+        if (graph[node] === null) {
+            continue;
+        }
+        groups.push(DFS(node, graph));
     }
+    // cities without roads 
+    let sum = (n - Object.keys(graph).length) * c_lib;
 
-    // now calculate the cost
-    let cost = 0
+    // now cost of groups 
     for (let group of groups) {
-        cost += c_lib + (group - 1) * c_road;
+        sum += c_lib + (group - 1) * c_road;
     }
-    return cost
+
+    return sum
 }
 
 // use DFS to determine the number of nodes in the group
-function DFS(node, unVisited, graph) {
+function DFS(node, graph) {
     let count = 1;
     // visit the node 
-    unVisited[node - 1] = null;
-
-    // case for no children
-    if (!graph[node-1]) {
-        return count;
-    }
-
+    const children = graph[node].slice() // to copy it
+    graph[node] = null;
 
     // get unvisited current children
-    graph[node - 1].forEach(child => {
-        if (unVisited[child - 1] !== null) {
-            count += DFS(child, unVisited, graph);
+    children.forEach(child => {
+        if (graph[child] !== null) {
+            count += DFS(child, graph);
         }
     })
     return count;
