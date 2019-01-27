@@ -18,12 +18,9 @@ function knapsack(arr, weight) {
       }
       const v1 = get_sub_sets(index + 1, selection.concat([index]), w_remain - arr[index][0]);
       const v2 = get_sub_sets(index + 1, selection, w_remain); 
-      const rtv = v1.value > v2.value ? v1 : v2;
+      const rtv = v1.value > v2.value ? v1 : v2; // key step only return the max 
       return rtv;
   }
-  
-
-
   
   return get_sub_sets(0);
 }
