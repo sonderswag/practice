@@ -8,9 +8,9 @@ var lengthOfLongestSubstring = function(s) {
   let seen = {};
   for (let i = 0 ; i < s.length ; i += 1) {
     if (s[i] in seen) {
-      longest = longest > curLength ? longest : curLength;
+      longest = longest > curLength ? longest : curLength; // determine if it is the max
       seen = {} // reset seen
-      i -= curLength - 1;
+      i -= curLength - 1; // set i back remove only the furthest back if greater than zero 
       curLength = 0;
     }
     curLength += 1;

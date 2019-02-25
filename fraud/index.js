@@ -25,6 +25,8 @@ function readLine() {
 }
 
 // Complete the activityNotifications function below.
+// Compute the running median of fixed size by count sort away eo calculate the median.
+// pop of old letter and add new ones
 function activityNotifications(expenditure, d) {
   let count = 0;
   let even = d % 2 === 0;
@@ -32,8 +34,10 @@ function activityNotifications(expenditure, d) {
     return 0;
   }
 
+  // great when you have a bound range 
   const counts = new Array(200).fill(0);
 
+  // prime the pump since no median till window is reached
   for (let i = 0 ; i < d ; i += 1) {
     counts[expenditure[i]] += 1;
   }
@@ -42,10 +46,12 @@ function activityNotifications(expenditure, d) {
     let sum = 0;
     let i = 0;
     let j = 0;
+    // find the median if odd
     while (sum < Math.floor(d/2) + 1) {
       sum += counts[i];
       i += 1; 
     }
+    // if even have to find a second number to complete it 
     if (even) {
       sum = 0;
       while (sum < Math.floor(d/2)) {

@@ -1,3 +1,5 @@
+// this is a O(n!) could be faster with memorization potentially
+// it uses the take or leave method to find all the possible combination of stuff 
 function knapsack(arr, weight) {
   const get_sub_sets = (index, selection = [], w_remain = weight) => {
 
@@ -16,7 +18,9 @@ function knapsack(arr, weight) {
         return rtv;
 
       }
+      // add the item 
       const v1 = get_sub_sets(index + 1, selection.concat([index]), w_remain - arr[index][0]);
+      // skip the item 
       const v2 = get_sub_sets(index + 1, selection, w_remain); 
       const rtv = v1.value > v2.value ? v1 : v2; // key step only return the max 
       return rtv;

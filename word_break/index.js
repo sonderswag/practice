@@ -22,7 +22,7 @@ var wordBreak = function(s, wordDict) {
     for (let i = 0; i < str.length ; i += 1) {
       searchString += str[i];
       if(lookUp(searchString)) {
-        let subString = str.slice(i+1)
+        let subString = str.slice(i+1); // slice off the word we found
         if(breakIt(subString)) {
           return true;
         }

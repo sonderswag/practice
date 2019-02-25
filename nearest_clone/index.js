@@ -34,20 +34,31 @@ function readLine() {
  * 3. An edge exists between <name>From[i] to <name>To[i].
  *
  */
+
+ // better way is to do BST and mark the distance from the starting node of all the desire colors are
+ // from there I can look at the distance from the starting node and trace back 
+
+
+ // the basic strategy is the following 
+ // filter out the colors we could start with O(n)
+ // Take that list and do BFS starting on color node => BSF O(n)
+ // when found add pair to desire color seen group 
+ // redo over any nodes that have the desire color that we haven't seen
+
 function findShortest(graphNodes, graphFrom, graphTo, ids, val) {
   const bfs = (node) => {
     const visited = new Array(graphNodes).fill(false);
     const queue = [node];
     let count = 0;
     while(queue.length) {
-      let cNode = queue.shift();
+      let cNode = queue.shift(); // pull something from the front
       visited[cNode] = true;
       if (count !== 0 && ids[cNode - 1] === val) {
           return {count, start: node, end: cNode};
       }
       for (let child of graph[cNode]) {
         if (!visited[child]) {
-          queue.push(child);
+          queue.push(child); // push element into the end
         }
       }
       count += 1; 
@@ -68,7 +79,7 @@ function findShortest(graphNodes, graphFrom, graphTo, ids, val) {
       return -1;
   }
 
-  // create the graph 
+  // create the graph from input
   const graph = {};
     for (let i = 0; i < graphFrom.length ; i += 1) {
       let from = graphFrom[i];

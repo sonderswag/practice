@@ -9,6 +9,7 @@ var lengthOfLongestSubstringKDistinct = function(s, k) {
   }
   const count = {};
   let kCount = 0;
+
   // add and return number of k’s 
   const add = (letter) => {
     if (!count[letter]) {
@@ -32,8 +33,8 @@ var lengthOfLongestSubstringKDistinct = function(s, k) {
     add(s[front]);
     if (kCount > k) {
       while (kCount > k) {
-      remove(s[back]);
-      back += 1;
+        remove(s[back]);
+        back += 1;
       }
     }
     maxLength = Math.max(front - back, maxLength); 
